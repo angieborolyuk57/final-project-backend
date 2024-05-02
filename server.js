@@ -1,16 +1,15 @@
 const app = require("./app");
 const mongoose = require("mongoose");
+require("dotenv").config();
 
-const DB_HOST =
-  "mongodb+srv://Anhelina:WYaQMNLNimB0ydbK@cluster0.mnkibze.mongodb.net/task_pro";
+const { DB_HOST, PORT } = process.env;
 
 mongoose
   .connect(DB_HOST)
   .then(() => {
     console.log("Database connected");
-    app.listen(3000, () => {
-      console.log;
-      ("Server is running. Use our API on port: 3000");
+    app.listen(PORT, () => {
+      console.log("Server is running. Use our API on port: 4000");
     });
   })
   .catch((error) => {
