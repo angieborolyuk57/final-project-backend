@@ -1,5 +1,5 @@
 const { User } = require("../models/users");
-const { HttpError, CntrlWrapper } = require("../helpers");
+const { HttpError, cntrlWrapper } = require("../helpers");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
@@ -66,8 +66,8 @@ const logout = async (req, res) => {
 };
 
 module.exports = {
-  register: CntrlWrapper(register),
-  login: CntrlWrapper(login),
-  getCurrent: CntrlWrapper(getCurrent),
-  logout: CntrlWrapper(logout),
+  register: cntrlWrapper(register),
+  login: cntrlWrapper(login),
+  getCurrent: cntrlWrapper(getCurrent),
+  logout: cntrlWrapper(logout),
 };
