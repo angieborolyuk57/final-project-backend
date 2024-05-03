@@ -1,10 +1,19 @@
 const express = require("express");
+const morgan = require("morgan");
 const cors = require("cors");
+
+const authRouter = require("./routes/auth");
 
 const app = express();
 
+app.use(morgan("tiny"));
 app.use(cors());
 app.use(express.json());
+
+app.use("/welcome", (req, res) => {
+  res.send("<h1>Welcome Page</h1>");
+});
+app.use("/users", authRouter);
 
 app.use((req, res) => {
   res.status(404).json({ message: "Route not found" });
