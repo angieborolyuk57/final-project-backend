@@ -1,10 +1,9 @@
 const { User } = require("../models/users");
 const { HttpError } = require("../helpers");
-const cntrlWrapper = require("../helpers/cntrlwrapper");
+const cntrlWrapper = require("../helpers/CntrlWrapper");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
-
 
 const register = async (req, res) => {
   const { email, password } = req.body;
