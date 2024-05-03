@@ -1,5 +1,6 @@
 const { User } = require("../models/users");
-const { HttpError, cntrlWrapper } = require("../helpers");
+const { HttpError } = require("../helpers");
+const cntrlWrapper = require("../helpers/cntrlwrapper");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
