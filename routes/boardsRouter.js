@@ -1,5 +1,7 @@
 const express = require("express");
 const boardsControllers = require("../controllers/boardsControllers.js");
+const columnsControllers = require("../controllers/columnsControllers.js");
+const cardsControllers = require("../controllers/cardsControllers.js");
 const validateBody = require("../helpers/validateBody.js");
 const {
   createBoardSchema,
@@ -11,40 +13,16 @@ const {
 } = require("../models/Board.js");
 const boardsRouter = express.Router();
 
+//Board routes
+
 boardsRouter.get("/", boardsControllers.getAllBoards);
 
 boardsRouter.get("/:boardId", boardsControllers.getOneBoard);
-
-boardsRouter.get("/:boardId/columns/", boardsControllers.getAllColumns);
-
-boardsRouter.get("/:boardId/columns/:columnId", boardsControllers.getOneColumn);
-
-boardsRouter.get(
-  "/:boardId/columns/:columnId/cards/",
-  boardsControllers.getAllCards
-);
-
-boardsRouter.get(
-  "/:boardId/columns/:columnId/cards/:cardId",
-  boardsControllers.getOneCard
-);
 
 boardsRouter.post(
   "/",
   validateBody(createBoardSchema),
   boardsControllers.addBoard
-);
-
-boardsRouter.post(
-  "/:boardId/columns/",
-  validateBody(createColumnSchema),
-  boardsControllers.addColumn
-);
-
-boardsRouter.post(
-  "/:boardId/columns/:columnId/cards/",
-  validateBody(createCardSchema),
-  boardsControllers.addCard
 );
 
 boardsRouter.put(
@@ -53,28 +31,61 @@ boardsRouter.put(
   boardsControllers.updateBoard
 );
 
-boardsRouter.put(
-  "/:boardId/columns/:columnId",
-  validateBody(updateColumnSchema),
-  boardsControllers.updateColumn
-);
-
-boardsRouter.put(
-  "/:boardId/columns/:columnId/cards/:cardId",
-  validateBody(updateColumnSchema),
-  boardsControllers.updateCard
-);
-
 boardsRouter.delete("/:boardId", boardsControllers.deleteBoard);
 
+//Column routes
+
+boardsRouter.get("/:boardId/columns/", columnsControllers.getAllColumns);
+
+boardsRouter.get(
+  "/:boardId/columns/:columnId",
+  columnsControllers.getOneColumn
+);
+
+boardsRouter.post(
+  "/:boardId/columns/",
+  validateBody(createColumnSchema),
+  columnsControllers.addColumn
+);
+
+boardsRouter.put(
+  "/:boardId/columns/:columnId",
+  validateBody(updateColumnSchema),
+  columnsControllers.updateColumn
+);
+
 boardsRouter.delete(
   "/:boardId/columns/:columnId",
-  boardsControllers.deleteColumn
+  columnsControllers.deleteColumn
+);
+
+//Card routes
+
+boardsRouter.get(
+  "/:boardId/columns/:columnId/cards/",
+  cardsControllers.getAllCards
+);
+
+boardsRouter.get(
+  "/:boardId/columns/:columnId/cards/:cardId",
+  cardsControllers.getOneCard
+);
+
+boardsRouter.post(
+  "/:boardId/columns/:columnId/cards/",
+  validateBody(createCardSchema),
+  cardsControllers.addCard
+);
+
+boardsRouter.put(
+  "/:boardId/columns/:columnId/cards/:cardId",
+  validateBody(updateColumnSchema),
+  cardsControllers.updateCard
 );
 
 boardsRouter.delete(
   "/:boardId/columns/:columnId/cards/:cardId",
-  boardsControllers.deleteCard
+  cardsControllers.deleteCard
 );
 
 module.exports = boardsRouter;
