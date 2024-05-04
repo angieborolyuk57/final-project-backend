@@ -94,7 +94,7 @@ const updateCardSchema = Joi.object({
   description: Joi.string(),
   color: Joi.string(),
   deadline: Joi.date(),
-});
+}).min(1);
 
 const Board = model("board", boardSchema);
 

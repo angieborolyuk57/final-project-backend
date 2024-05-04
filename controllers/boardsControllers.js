@@ -140,7 +140,11 @@ const updateColumn = async (req, res) => {
       return res.status(404).json({ message: "Column not found" });
     }
     const tmpIndex = columnIndex;
-    board.columns.splice(columnIndex, 1, { ...req.body, _id: columnId });
+    board.columns.splice(columnIndex, 1, {
+      ...req.body,
+      _id: columnId,
+      cards: [...board.columns[tmpIndex].cards],
+    });
     const updatedBoard = await board.save();
     res.json(updatedBoard.columns[tmpIndex]);
   } catch (error) {
@@ -166,7 +170,12 @@ const updateCard = async (req, res) => {
     if (cardIndex === -1) {
       return res.status(404).json({ message: "Card not found" });
     }
-    column.cards.splice(cardIndex, 1, { ...req.body, _id: cardId });
+    const tmpCard = column.cards[cardIndex];
+    column.cards.splice(cardIndex, 1, {
+      ...tmpCard,
+      ...req.body,
+      _id: cardId,
+    });
     await board.save();
     res.json(column.cards[cardIndex]);
   } catch (error) {
