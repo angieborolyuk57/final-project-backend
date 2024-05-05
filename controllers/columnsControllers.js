@@ -1,5 +1,4 @@
 const cntrlWrapper = require("../helpers/cntrlwrapper.js");
-const HttpError = require("../helpers/HttpError.js");
 const { Board } = require("../models/Board.js");
 
 const getAllColumns = async (req, res) => {
@@ -31,6 +30,15 @@ const addColumn = async (req, res) => {
     const board = await Board.findById(boardId);
     if (!board) {
       return res.status(404).json({ message: "Board not found" });
+    }
+    const { title } = req.body;
+    const existingColumnIndex = board.columns.findIndex(
+      (col) => col.title === title
+    );
+    if (existingColumnIndex !== -1) {
+      return res.status(409).json({
+        message: "This title is already in use",
+      });
     }
     board.columns.push(req.body);
     const updatedBoard = await board.save();
