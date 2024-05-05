@@ -10,3 +10,4 @@ const CntrlWrapper = (ctrl) => {
 };
 
 module.exports = CntrlWrapper;
+
