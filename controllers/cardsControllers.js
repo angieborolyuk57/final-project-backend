@@ -1,4 +1,4 @@
-const cntrlWrapper = require("../helpers/cntrlwrapper.js");
+const cntrlWrapper = require("../helpers/cntrlWrapper.js");
 const HttpError = require("../helpers/HttpError.js");
 const { Board } = require("../models/Board.js");
 
