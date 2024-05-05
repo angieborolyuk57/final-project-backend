@@ -1,7 +1,7 @@
 const dotenv = require("dotenv");
 const { User } = require("../models/users");
 dotenv.config();
-const { v2 } = require("cloudinary");
+const cloudinary = require("cloudinary").v2;
 
 const { CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, CLOUDINARY_API_SECRET } =
   process.env;

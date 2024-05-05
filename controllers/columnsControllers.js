@@ -1,4 +1,4 @@
-const cntrlWrapper = require("../helpers/cntrlWrapper.js");
+const { cntrlWrapper } = require("../helpers/index.js");
 const { Board } = require("../models/board.js");
 
 const getAllColumns = async (req, res) => {
