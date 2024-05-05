@@ -79,7 +79,7 @@ boardsRouter.post(
 
 boardsRouter.put(
   "/:boardId/columns/:columnId/cards/:cardId",
-  validateBody(updateColumnSchema),
+  validateBody(updateCardSchema),
   cardsControllers.updateCard
 );
 

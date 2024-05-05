@@ -3,6 +3,42 @@ const Joi = require("joi");
 
 const handleMongooseError = require("../helpers/handleMongooseError");
 
+const setUpdateSetting = function (next) {
+  this.options.new = true;
+  this.options.runValidators = true;
+  next();
+};
+
+const cardSchema = new Schema({
+  title: {
+    type: String,
+    required: [true, "Set title for card"],
+  },
+  description: {
+    type: String,
+    default: "",
+  },
+  color: {
+    type: String,
+    default: null,
+  },
+  deadline: {
+    type: Date,
+    default: null,
+  },
+});
+
+const columnSchema = new Schema({
+  title: {
+    type: String,
+    required: [true, "Set title for column"],
+  },
+  cards: {
+    type: [cardSchema],
+    default: [],
+  },
+});
+
 const boardSchema = new Schema(
   {
     title: {
@@ -11,37 +47,7 @@ const boardSchema = new Schema(
       required: [true, "Set title for board"],
     },
     columns: {
-      type: [
-        {
-          title: {
-            type: String,
-            required: [true, "Set title for column"],
-          },
-          cards: {
-            type: [
-              {
-                title: {
-                  type: String,
-                  required: [true, "Set title for card"],
-                },
-                description: {
-                  type: String,
-                  default: "",
-                },
-                color: {
-                  type: String,
-                  default: null,
-                },
-                deadline: {
-                  type: Date,
-                  default: null,
-                },
-              },
-            ],
-            default: [],
-          },
-        },
-      ],
+      type: [columnSchema],
       default: [],
     },
     icon: {
@@ -57,6 +63,22 @@ const boardSchema = new Schema(
 );
 
 boardSchema.post("save", handleMongooseError);
+
+boardSchema.pre("findOneAndUpdate", setUpdateSetting);
+
+boardSchema.post("findOneAndUpdate", handleMongooseError);
+
+columnSchema.post("save", handleMongooseError);
+
+columnSchema.pre("findOneAndUpdate", setUpdateSetting);
+
+columnSchema.post("findOneAndUpdate", handleMongooseError);
+
+cardSchema.post("save", handleMongooseError);
+
+cardSchema.pre("findOneAndUpdate", setUpdateSetting);
+
+cardSchema.post("findOneAndUpdate", handleMongooseError);
 
 const createBoardSchema = Joi.object({
   title: Joi.string().required(),
@@ -98,8 +120,14 @@ const updateCardSchema = Joi.object({
 
 const Board = model("board", boardSchema);
 
+const Column = model("column", columnSchema);
+
+const Card = model("card", cardSchema);
+
 module.exports = {
   Board,
+  Column,
+  Card,
   createBoardSchema,
   updateBoardSchema,
   createColumnSchema,
