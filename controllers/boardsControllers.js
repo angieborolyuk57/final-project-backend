@@ -1,6 +1,6 @@
-const cntrlWrapper = require("../helpers/cntrlWrapper.js");
+const { cntrlWrapper } = require("../helpers");
 const HttpError = require("../helpers/HttpError.js");
-const { Board } = require("../models/Board.js");
+const { Board } = require("../models/board.js");
 
 const getAllBoards = async (req, res) => {
   const result = await Board.find({});

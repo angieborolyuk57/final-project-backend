@@ -1,5 +1,5 @@
-const cntrlWrapper = require("../helpers/cntrlWrapper.js");
-const { Board, Card } = require("../models/Board.js");
+const {cntrlWrapper} = require("../helpers");
+const { Board, Card } = require("../models/board.js");
 
 const getAllCards = async (req, res) => {
   const { boardId, columnId } = req.params;
