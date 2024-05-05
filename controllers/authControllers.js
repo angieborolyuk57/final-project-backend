@@ -1,8 +1,9 @@
 const { User } = require("../models/users");
 const { HttpError } = require("../helpers");
-const cntrlWrapper = require("../helpers/CntrlWrapper");
+const cntrlWrapper = require("../helpers/cntrlWrapper");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const authServices = require("../services/authServices");
 require("dotenv").config();
 
 const register = async (req, res) => {
@@ -47,15 +48,42 @@ const login = async (req, res) => {
     token,
     user: {
       email: user.email,
+      name: user.name,
+      avatarURL: user.avatarURL,
+      theme: user.theme,
     },
   });
 };
 
 const getCurrent = async (req, res) => {
-  const { email } = req.user;
+  const { email, name, avatarURL, theme } = req.user;
   res.status(200).json({
     email,
+    name,
+    avatarURL,
+    theme,
   });
+};
+
+const updateUser = async (req, res) => {
+  const { _id } = req.user;
+
+  let avatarURL;
+  if (req.file) {
+    const { path: tmpUpload } = req.file;
+    avatarURL = await authServices.saveAvatar(tmpUpload, _id);
+  }
+
+  if (req.body) {
+    const { name, email, password } = req.body;
+    const updatedUser = await authServices.updateUserData(_id, {
+      name,
+      email,
+      password,
+      avatarURL,
+    });
+    res.json({ updatedUser });
+  }
 };
 
 const logout = async (req, res) => {
@@ -66,9 +94,23 @@ const logout = async (req, res) => {
   });
 };
 
+const updateUserTheme = async (req, res) => {
+  const { _id: idOwner } = req.user;
+  const { theme } = req.body;
+
+  const updatedTheme = await authServices.updateThemeDB(idOwner, theme);
+
+  res.status(200).json({
+    email: updatedTheme.email,
+    theme: updatedTheme.theme,
+  });
+};
+
 module.exports = {
   register: cntrlWrapper(register),
   login: cntrlWrapper(login),
   getCurrent: cntrlWrapper(getCurrent),
+  updateUser: cntrlWrapper(updateUser),
+  updateUserTheme: cntrlWrapper(updateUserTheme),
   logout: cntrlWrapper(logout),
 };

@@ -1,4 +1,4 @@
-const cntrlWrapper = require("../helpers/cntrlwrapper.js");
+const cntrlWrapper = require("../helpers/cntrlWrapper.js");
 const { Board, Card } = require("../models/Board.js");
 
 const getAllCards = async (req, res) => {
