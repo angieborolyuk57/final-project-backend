@@ -35,10 +35,19 @@ const addBoard = async (req, res) => {
 };
 
 const updateBoard = async (req, res) => {
-  const { boardId } = req.params;
-  const result = await Board.findByIdAndUpdate(boardId, req.body);
-  if (!result) throw HttpError(404, `Not found`);
-  res.json(result);
+  try {
+    const { boardId } = req.params;
+    const { title } = req.body;
+    const board = await Board.find({ title });
+    if (board && board.length > 0) {
+      return res.status(409).json({ message: "This title is already in use" });
+    }
+    const result = await Board.findByIdAndUpdate(boardId, req.body);
+    if (!result) throw HttpError(404, `Not found`);
+    res.json(result);
+  } catch (error) {
+    res.status(500).json({ message: `${error}` });
+  }
 };
 
 const deleteBoard = async (req, res) => {

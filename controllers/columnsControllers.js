@@ -2,26 +2,33 @@ const cntrlWrapper = require("../helpers/cntrlwrapper.js");
 const { Board } = require("../models/Board.js");
 
 const getAllColumns = async (req, res) => {
-  const { boardId } = req.params;
-  const board = await Board.findById(boardId);
-  if (!board) {
-    return res.status(404).json({ message: "Board not found" });
+  try {
+    const { boardId } = req.params;
+    const board = await Board.findById(boardId);
+    if (!board) {
+      return res.status(404).json({ message: "Board not found" });
+    }
+    res.json(board.columns);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
-  const result = board.columns;
-  res.json(result);
 };
 
 const getOneColumn = async (req, res) => {
-  const { boardId, columnId } = req.params;
-  const board = await Board.findById(boardId);
-  const columnIndex = board.columns.findIndex(
-    (column) => column.id === columnId
-  );
-  if (columnIndex === -1) {
-    return res.status(404).json({ message: "Column not found" });
+  try {
+    const { boardId, columnId } = req.params;
+    const board = await Board.findById(boardId);
+    if (!board) {
+      return res.status(404).json({ message: "Board not found" });
+    }
+    const column = board.columns.find((col) => col.id === columnId);
+    if (!column) {
+      return res.status(404).json({ message: "Column not found" });
+    }
+    res.json(column);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
-  const result = board.columns[columnIndex];
-  res.json(result);
 };
 
 const addColumn = async (req, res) => {
