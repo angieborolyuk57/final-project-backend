@@ -1,4 +1,4 @@
-const { cntrlWrapper } = require("../helpers");
+const { errorCatcher } = require("../helpers");
 const { Board, Card } = require("../models/board.js");
 
 const getAllCards = async (req, res) => {
@@ -124,9 +124,9 @@ const deleteCard = async (req, res) => {
 };
 
 module.exports = {
-  getAllCards: cntrlWrapper(getAllCards),
-  getOneCard: cntrlWrapper(getOneCard),
-  addCard: cntrlWrapper(addCard),
-  updateCard: cntrlWrapper(updateCard),
-  deleteCard: cntrlWrapper(deleteCard),
+  getAllCards: errorCatcher(getAllCards),
+  getOneCard: errorCatcher(getOneCard),
+  addCard: errorCatcher(addCard),
+  updateCard: errorCatcher(updateCard),
+  deleteCard: errorCatcher(deleteCard),
 };

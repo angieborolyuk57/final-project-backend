@@ -1,5 +1,5 @@
 const { User } = require("../models/users");
-const { HttpError, cntrlWrapper } = require("../helpers");
+const { HttpError, errorCatcher } = require("../helpers");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const authServices = require("../services/authServices");
@@ -106,10 +106,10 @@ const updateUserTheme = async (req, res) => {
 };
 
 module.exports = {
-  register: cntrlWrapper(register),
-  login: cntrlWrapper(login),
-  getCurrent: cntrlWrapper(getCurrent),
-  updateUser: cntrlWrapper(updateUser),
-  updateUserTheme: cntrlWrapper(updateUserTheme),
-  logout: cntrlWrapper(logout),
+  register: errorCatcher(register),
+  login: errorCatcher(login),
+  getCurrent: errorCatcher(getCurrent),
+  updateUser: errorCatcher(updateUser),
+  updateUserTheme: errorCatcher(updateUserTheme),
+  logout: errorCatcher(logout),
 };

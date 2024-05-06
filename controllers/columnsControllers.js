@@ -1,4 +1,4 @@
-const { cntrlWrapper } = require("../helpers");
+const { errorCatcher } = require("../helpers");
 const { Board } = require("../models/board.js");
 
 const getAllColumns = async (req, res) => {
@@ -105,9 +105,9 @@ const deleteColumn = async (req, res) => {
 };
 
 module.exports = {
-  getAllColumns: cntrlWrapper(getAllColumns),
-  getOneColumn: cntrlWrapper(getOneColumn),
-  addColumn: cntrlWrapper(addColumn),
-  updateColumn: cntrlWrapper(updateColumn),
-  deleteColumn: cntrlWrapper(deleteColumn),
+  getAllColumns: errorCatcher(getAllColumns),
+  getOneColumn: errorCatcher(getOneColumn),
+  addColumn: errorCatcher(addColumn),
+  updateColumn: errorCatcher(updateColumn),
+  deleteColumn: errorCatcher(deleteColumn),
 };

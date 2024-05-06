@@ -1,4 +1,4 @@
-const { cntrlWrapper, HttpError } = require("../helpers");
+const { errorCatcher, HttpError } = require("../helpers");
 const { Board } = require("../models/board.js");
 
 const getAllBoards = async (req, res) => {
@@ -57,9 +57,9 @@ const deleteBoard = async (req, res) => {
 };
 
 module.exports = {
-  getAllBoards: cntrlWrapper(getAllBoards),
-  getOneBoard: cntrlWrapper(getOneBoard),
-  addBoard: cntrlWrapper(addBoard),
-  updateBoard: cntrlWrapper(updateBoard),
-  deleteBoard: cntrlWrapper(deleteBoard),
+  getAllBoards: errorCatcher(getAllBoards),
+  getOneBoard: errorCatcher(getOneBoard),
+  addBoard: errorCatcher(addBoard),
+  updateBoard: errorCatcher(updateBoard),
+  deleteBoard: errorCatcher(deleteBoard),
 };
