@@ -1,5 +1,5 @@
 const { errorCatcher } = require("../helpers");
-const { Board } = require("../models/board.js");
+const { Board } = require("../models/Board.js");
 
 const getAllColumns = async (req, res) => {
   try {

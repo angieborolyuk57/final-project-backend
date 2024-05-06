@@ -10,7 +10,7 @@ const {
   updateColumnSchema,
   createCardSchema,
   updateCardSchema,
-} = require("../models/board.js");
+} = require("../models/Board.js");
 const boardsRouter = express.Router();
 
 //Board routes

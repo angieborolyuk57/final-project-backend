@@ -1,5 +1,5 @@
 const { errorCatcher, HttpError } = require("../helpers");
-const { Board } = require("../models/board.js");
+const { Board } = require("../models/Board.js");
 
 const getAllBoards = async (req, res) => {
   const result = await Board.find({});
