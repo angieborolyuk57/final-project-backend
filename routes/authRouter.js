@@ -16,7 +16,7 @@ authRouter.post("/login", validateBody(schemas.loginSchema), ctrl.login);
 
 authRouter.get("/current", authenticate, ctrl.getCurrent);
 
-authRouter.post("/logout", authenticate, ctrl.logout);
+authRouter.post("/logout", ctrl.logout);
 
 authRouter.patch("/avatars", upload.single("avatarURL"), ctrl.updateUser);
 

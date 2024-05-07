@@ -1,4 +1,4 @@
-const сntrlWrapper = (ctrl) => {
+const errorCatcher = (ctrl) => {
   const func = async (req, res, next) => {
     try {
       await ctrl(req, res, next);
@@ -9,4 +9,4 @@ const сntrlWrapper = (ctrl) => {
   return func;
 };
 
-module.exports = сntrlWrapper;
+module.exports = errorCatcher;
