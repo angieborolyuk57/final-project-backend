@@ -4,6 +4,7 @@ const Joi = require("joi");
 const handleMongooseError = require("../helpers/handleMongooseError");
 
 const emailRegexp = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+const themeList = ["light", "violet", "dark"];
 
 const userSchema = new Schema(
   {
@@ -30,7 +31,12 @@ const userSchema = new Schema(
       type: String,
       default: null,
     },
-    avatarURL: String,
+    avatarURL: { type: String, default: "" },
+    theme: {
+      type: String,
+      enum: themeList,
+      default: "dark",
+    },
   },
   { versionKey: false, timestamps: true }
 );
