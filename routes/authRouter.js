@@ -22,8 +22,8 @@ authRouter.post("/logout", ctrl.logout);
 authRouter.put(
   "/update",
   authenticate,
-  validateBody(schemas.updateUserSchema),
   upload.single("avatarURL"),
+  validateBody(schemas.updateUserSchema),
   ctrl.updateUser
 );
 

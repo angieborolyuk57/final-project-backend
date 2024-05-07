@@ -82,6 +82,7 @@ const updateUserTheme = async (req, res) => {
 
 const updateUser = async (req, res) => {
   const { _id } = req.user;
+  console.log(req.file);
 
   let avatarURL;
   if (req.file) {
