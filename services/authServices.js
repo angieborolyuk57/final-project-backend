@@ -30,7 +30,7 @@ const updateUserData = async (userId, updatedData) => {
 };
 
 const updateThemeDB = async (idOwner, theme) => {
-  const updateTheme = await UserModel.findOneAndUpdate(
+  const updateTheme = await User.findOneAndUpdate(
     idOwner,
     { theme },
     { new: true }

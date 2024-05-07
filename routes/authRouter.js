@@ -22,6 +22,7 @@ authRouter.patch("/avatars", upload.single("avatarURL"), ctrl.updateUser);
 
 authRouter.patch(
   "/theme",
+  authenticate,
   validateBody(schemas.updateThemeSchema),
   ctrl.updateUserTheme
 );
