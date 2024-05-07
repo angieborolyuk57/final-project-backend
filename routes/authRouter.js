@@ -3,6 +3,7 @@ const express = require("express");
 const { authenticate, validateBody, upload } = require("../helpers");
 const { schemas } = require("../models/users");
 const ctrl = require("../controllers/authControllers");
+const authControllers = require("../controllers/authControllers");
 
 const authRouter = express.Router();
 
@@ -18,7 +19,13 @@ authRouter.get("/current", authenticate, ctrl.getCurrent);
 
 authRouter.post("/logout", ctrl.logout);
 
-authRouter.patch("/avatars", upload.single("avatarURL"), ctrl.updateUser);
+authRouter.put(
+  "/update",
+  authenticate,
+  validateBody(schemas.updateUserSchema),
+  upload.single("avatarURL"),
+  ctrl.updateUser
+);
 
 authRouter.patch(
   "/theme",

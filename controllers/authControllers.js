@@ -79,12 +79,14 @@ const updateUserTheme = async (req, res) => {
     theme: updatedTheme.theme,
   });
 };
+
 const updateUser = async (req, res) => {
   const { _id } = req.user;
 
   let avatarURL;
   if (req.file) {
     const { path: tmpUpload } = req.file;
+    console.log(tmpUpload);
     avatarURL = await authServices.saveAvatar(tmpUpload, _id);
   }
 

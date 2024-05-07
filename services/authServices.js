@@ -1,7 +1,7 @@
 const dotenv = require("dotenv");
 const { User } = require("../models/users");
-dotenv.config();
 const cloudinary = require("cloudinary").v2;
+dotenv.config();
 
 const { CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, CLOUDINARY_API_SECRET } =
   process.env;
@@ -13,7 +13,12 @@ const saveAvatar = async (tmpUpload, _id) => {
     api_secret: CLOUDINARY_API_SECRET,
   });
   const result = await cloudinary.uploader.upload(tmpUpload);
-  return result.url;
+  const url = cloudinary.url(result.public_id, {
+    width: 100,
+    height: 150,
+    crop: "fill",
+  });
+  return url;
 };
 
 const updateUserData = async (userId, updatedData) => {
