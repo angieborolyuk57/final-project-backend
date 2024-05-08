@@ -1,33 +1,33 @@
-const express = require("express");
+const express = require('express');
 
-const { authenticate, validateBody, upload } = require("../helpers");
-const { schemas } = require("../models/users");
-const ctrl = require("../controllers/authControllers");
+const { authenticate, validateBody, upload } = require('../helpers');
+const { schemas } = require('../models/User');
+const ctrl = require('../controllers/authControllers');
 
 const authRouter = express.Router();
 
 authRouter.post(
-  "/register",
+  '/register',
   validateBody(schemas.registerSchema),
   ctrl.register
 );
 
-authRouter.post("/login", validateBody(schemas.loginSchema), ctrl.login);
+authRouter.post('/login', validateBody(schemas.loginSchema), ctrl.login);
 
-authRouter.get("/current", authenticate, ctrl.getCurrent);
+authRouter.get('/current', authenticate, ctrl.getCurrent);
 
-authRouter.post("/logout", authenticate, ctrl.logout);
+authRouter.post('/logout', authenticate, ctrl.logout);
 
 authRouter.put(
-  "/update",
+  '/update',
   authenticate,
-  upload.single("avatarURL"),
+  upload.single('avatarURL'),
   validateBody(schemas.updateUserSchema),
   ctrl.updateUser
 );
 
 authRouter.patch(
-  "/theme",
+  '/theme',
   authenticate,
   validateBody(schemas.updateThemeSchema),
   ctrl.updateUserTheme
