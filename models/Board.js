@@ -1,5 +1,17 @@
 const { Schema, model } = require('mongoose');
-const { columnSchema } = require('./Column.js');
+const handleMongooseError = require('../helpers/handleMongooseError.js');
+
+const iconList = [
+  'four-circles',
+  'eye',
+  'star',
+  'loading',
+  'puzzle',
+  'container',
+  'logo',
+  'hexagon',
+  'default',
+];
 
 const boardSchema = new Schema(
   {
@@ -8,26 +20,25 @@ const boardSchema = new Schema(
       unique: true,
       required: [true, 'Set title for board'],
     },
-    columns: {
-      type: [columnSchema],
-      default: [],
-    },
     icon: {
       type: String,
       default: 'default',
+      enum: iconList,
     },
     background: {
       type: String,
-      default: 'default',
+      default: '1',
     },
     owner: {
       type: Schema.Types.ObjectId,
-      ref: 'user',
+      ref: 'User',
       required: true,
     },
   },
   { versionKey: false, timestamps: true }
 );
+
+boardSchema.post('save', handleMongooseError);
 
 const Board = model('board', boardSchema);
 

@@ -3,18 +3,35 @@ const Joi = require('joi');
 const createCardSchema = Joi.object({
   title: Joi.string().required(),
   description: Joi.string(),
-  color: Joi.string(),
-  deadline: Joi.date(),
+  priority: Joi.string()
+    .valid('Without priority', 'Low', 'Medium', 'High')
+    .default('Low'),
+  deadline: Joi.date().required(),
+  boardId: Joi.string().required(),
+  columnId: Joi.string().required(),
+  index: Joi.number().required(),
 });
 
 const updateCardSchema = Joi.object({
   title: Joi.string(),
   description: Joi.string(),
-  color: Joi.string(),
   deadline: Joi.date(),
-}).min(1);
+  boardId: Joi.string(),
+  columnId: Joi.string(),
+  index: Joi.number(),
+});
 
-module.exports = {
+const updateColumnIdinCardSchema = Joi.object({
+  columnId: Joi.string().required(),
+  index: Joi.number().required(),
+});
+
+const schemas = {
   createCardSchema,
   updateCardSchema,
+  updateColumnIdinCardSchema,
+};
+
+module.exports = {
+  schemas,
 };

@@ -1,76 +1,64 @@
-const { errorCatcher } = require('../helpers');
-const { Board } = require('../models/Board.js');
-const { login } = require('./authControllers.js');
-const boardsServices = require('../services/boardsServices.js');
+const { errorCatcher, HttpError } = require('../helpers');
+const columnsServices = require('../services/columnsServices.js');
 
 const getAllColumns = async (req, res) => {
   const { boardId } = req.params;
-  const board = await Board.findById(boardId);
-  if (!board) {
-    return res.status(404).json({ message: 'Board not found' });
-  }
-  res.json(board.columns);
+  const { _id: owner } = req.user;
+
+  const columns = await columnsServices.getAllColumns(boardId, owner);
+  res.json(columns);
 };
 
 const addColumn = async (req, res) => {
   const { _id: owner } = req.user;
-  const { boardId } = req.params;
-  const board = await boardsServices.getOneBoardByFilter({
-    owner,
-    _id: boardId,
-  });
-  if (!board) {
-    return res.status(404).json({ message: 'Board not found' });
+  const { boardId, title } = req.body;
+
+  if (!boardId) {
+    throw HttpError(400, 'Board ID is required');
   }
-  const { title } = req.body;
-  const existingColumnIndex = board.columns.findIndex(
-    col => col.title === title
-  );
-  if (existingColumnIndex !== -1) {
-    return res.status(409).json({
-      message: 'This title is already in use',
-    });
+
+  const newColumn = await columnsServices.addColumn(owner, { boardId, title });
+
+  if (newColumn.error) {
+    throw HttpError(409, newColumn.error);
   }
-  board.columns.push(req.body);
-  const updatedBoard = await board.save();
-  const columnIndex = updatedBoard.columns.length - 1;
-  res.status(201).json(updatedBoard.columns[columnIndex]);
+
+  res.status(201).json(newColumn);
 };
 
 const updateColumn = async (req, res) => {
-  const { boardId, columnId } = req.params;
-  const board = await Board.findById(boardId);
-  if (!board) {
-    return res.status(404).json({ message: 'Board not found' });
+  const { columnId } = req.params;
+  const { body } = req;
+  const { _id: owner } = req.user;
+
+  if (!body || Object.keys(body).length === 0) {
+    throw HttpError(400, 'missing field');
   }
-  const columnIndex = board.columns.findIndex(column => column.id === columnId);
-  if (columnIndex === -1) {
-    return res.status(404).json({ message: 'Column not found' });
+
+  const updatedColumn = await columnsServices.updateColumn(
+    columnId,
+    owner,
+    body
+  );
+
+  if (!updatedColumn) {
+    throw HttpError(404, `Column with id ${columnId} not found`);
   }
-  const tmpIndex = columnIndex;
-  board.columns.splice(columnIndex, 1, {
-    ...req.body,
-    _id: columnId,
-    cards: [...board.columns[tmpIndex].cards],
-  });
-  const updatedBoard = await board.save();
-  res.json(updatedBoard.columns[tmpIndex]);
+
+  res.json(updatedColumn);
 };
 
 const deleteColumn = async (req, res) => {
-  const { boardId, columnId } = req.params;
-  const board = await Board.findById(boardId);
-  if (!board) {
-    return res.status(404).json({ message: 'Board not found' });
+  const { columnId } = req.params;
+  const { _id: owner } = req.user;
+
+  const column = await columnsServices.removeColumn(columnId, owner);
+
+  if (!column) {
+    throw HttpError(404, `Column with id ${columnId} not found`);
   }
-  const columnIndex = board.columns.findIndex(column => column.id === columnId);
-  if (columnIndex === -1) {
-    return res.status(404).json({ message: 'Column not found' });
-  }
-  const deletedColumn = board.columns[columnIndex];
-  board.columns.splice(columnIndex, 1);
-  await board.save();
-  res.json(deletedColumn);
+
+  res.json({ message: 'Column deleted successfully' });
 };
 
 module.exports = {

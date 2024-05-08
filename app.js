@@ -6,6 +6,8 @@ const swaggerDocs = require('./helpers/swagger');
 
 const authRouter = require('./routes/authRouter');
 const boardsRouter = require('./routes/boardsRouter');
+const columnsRouter = require('./routes/columnsRouter');
+const cardsRouter = require('./routes/cardsRouter');
 
 const app = express();
 
@@ -16,11 +18,15 @@ app.use(express.json());
 app.use('/welcome', (req, res) => {
   res.send('<h1>Welcome Page</h1>');
 });
+
+
+//routers 
 app.use('/users', authRouter);
-
 app.use('/boards', boardsRouter);
+app.use('/columns', columnsRouter);
+app.use('/cards', cardsRouter);
 
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs())) ;
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs()));
 
 app.use((req, res) => {
   res.status(404).json({ message: 'Route not found' });

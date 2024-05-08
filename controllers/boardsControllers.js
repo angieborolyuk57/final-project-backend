@@ -1,6 +1,6 @@
 const { errorCatcher, HttpError } = require('../helpers');
-const { Board } = require('../models/Board.js');
 const boardsServices = require('../services/boardsServices.js');
+const { mongoose } = require('mongoose');
 
 const getAllBoards = async (req, res) => {
   const { _id: owner } = req.user;
@@ -11,45 +11,54 @@ const getAllBoards = async (req, res) => {
 const addBoard = async (req, res) => {
   const { _id: owner } = req.user;
   const { title } = req.body;
-  const board = await boardsServices.getOneBoardByFilter({
-    owner,
-    title: title,
-  });
-  if (board) {
-    return res.status(409).json({ message: 'This title is already in use' });
+
+  const ownerId = new mongoose.Types.ObjectId(owner);
+
+  const newBoard = await boardsServices.addBoard(ownerId, title);
+
+  if (newBoard.error) {
+    throw HttpError(409, newBoard.error);
   }
-  const result = await boardsServices.addBoard({ owner, ...req.body });
-  res.status(201).json(result);
+
+  res.status(201).json(newBoard);
 };
 
 const updateBoard = async (req, res) => {
   const { _id: owner } = req.user;
   const { boardId } = req.params;
-  const { title } = req.body;
-  const board = await boardsServices.getOneBoardByFilter({
-    owner,
-    title: title,
-  });
-  if (board) {
-    return res.status(409).json({ message: 'This title is already in use' });
+  const { body } = req;
+
+  if (!body || Object.keys(body).length === 0) {
+    throw HttpError(400, 'missing field');
   }
-  const result = await boardsServices.updateBoardByFilter(
-    { owner, _id: boardId },
-    req.body
-  );
-  if (!result) throw HttpError(404, `Board not found`);
-  res.json(result);
+
+  try {
+    const updatedBoard = await boardsServices.updateBoard(boardId, owner, body);
+
+    if (!updatedBoard) {
+      throw HttpError(404, `Board with id ${boardId} not found`);
+    }
+
+    res.json(updatedBoard);
+  } catch (error) {
+    if (error.name === 'CastError' && error.kind === 'ObjectId') {
+      throw HttpError(400, `Invalid board ID: ${boardId}`);
+    } else {
+      throw error;
+    }
+  }
 };
 
 const deleteBoard = async (req, res) => {
   const { _id: owner } = req.user;
   const { boardId } = req.params;
-  const result = await boardsServices.removeBoardByFilter({
+
+  const board = await boardsServices.removeBoard({
     owner,
-    _id: boardId,
+    boardId,
   });
-  if (!result) throw HttpError(404, `Board not found`);
-  res.json(result);
+  if (!board) throw HttpError(404, `Board with id ${boardId} not found`);
+  res.json({ message: 'Board deleted successfully' });
 };
 
 module.exports = {
