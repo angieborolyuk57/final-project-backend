@@ -21,17 +21,13 @@ const updateCardSchema = Joi.object({
   index: Joi.number(),
 });
 
-const updateColumnIdinCardSchema = Joi.object({
+const updateColumnIdInCardSchema = Joi.object({
   columnId: Joi.string().required(),
   index: Joi.number().required(),
 });
 
-const schemas = {
+module.exports = {
   createCardSchema,
   updateCardSchema,
-  updateColumnIdinCardSchema,
-};
-
-module.exports = {
-  schemas,
+  updateColumnIdInCardSchema,
 };
