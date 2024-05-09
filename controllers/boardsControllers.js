@@ -53,10 +53,7 @@ const deleteBoard = async (req, res) => {
   const { _id: owner } = req.user;
   const { boardId } = req.params;
 
-  const board = await boardsServices.removeBoard({
-    owner,
-    boardId,
-  });
+  const board = await boardsServices.removeBoard(owner, boardId);
   if (!board) throw HttpError(404, `Board with id ${boardId} not found`);
   res.json({ message: 'Board deleted successfully' });
 };

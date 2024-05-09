@@ -1,7 +1,11 @@
 const express = require('express');
 const { authenticate, validateBody } = require('../helpers');
 const cardsControllers = require('../controllers/cardsControllers.js');
-const schemas = require('../schemas/cardSchema.js');
+const {
+  createCardSchema,
+  updateCardSchema,
+  updateColumnIdInCardSchema,
+} = require('../schemas/cardSchema.js');
 
 const cardsRouter = express.Router();
 
@@ -10,21 +14,21 @@ cardsRouter.get('/:boardId', authenticate, cardsControllers.getAllCards);
 cardsRouter.post(
   '/',
   authenticate,
-  validateBody(schemas.createCardSchema),
+  validateBody(createCardSchema),
   cardsControllers.addCard
 );
 
 cardsRouter.put(
   '/:cardId',
   authenticate,
-  validateBody(schemas.updateCardSchema),
+  validateBody(updateCardSchema),
   cardsControllers.updateCard
 );
 
 cardsRouter.patch(
   '/:cardId',
   authenticate,
-  validateBody(schemas.updateColumnIdinCardSchema),
+  validateBody(updateColumnIdInCardSchema),
   cardsControllers.updateColumnIdInCard
 );
 

@@ -1,5 +1,5 @@
 const { errorCatcher, HttpError } = require('../helpers');
-const { cardsServices } = require('../services/cardsServices.js');
+const cardsServices = require('../services/cardsServices.js');
 
 const getAllCards = async (req, res) => {
   const { _id: owner } = req.user;
