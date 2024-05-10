@@ -7,8 +7,8 @@ const listBoards = owner => Board.find({ owner });
 
 const getOneBoardByFilter = filter => Board.findOne(filter);
 
-const addBoard = async (owner, title) => {
-  const exist = await Board.findOne({ owner, title });
+const addBoard = async (owner, data) => {
+  const exist = await Board.findOne({ owner, title: data.title });
 
   if (exist) {
     return {
@@ -16,7 +16,7 @@ const addBoard = async (owner, title) => {
     };
   }
 
-  const board = await Board.create({ owner, title });
+  const board = await Board.create({ owner, ...data });
 
   return board;
 };

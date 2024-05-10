@@ -10,7 +10,6 @@ const iconList = [
   'container',
   'logo',
   'hexagon',
-  'default',
 ];
 
 const boardSchema = new Schema(
@@ -22,7 +21,7 @@ const boardSchema = new Schema(
     },
     icon: {
       type: String,
-      default: 'default',
+      default: 'four-circles',
       enum: iconList,
     },
     background: {

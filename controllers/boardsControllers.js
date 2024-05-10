@@ -14,7 +14,7 @@ const addBoard = async (req, res) => {
 
   const ownerId = new mongoose.Types.ObjectId(owner);
 
-  const newBoard = await boardsServices.addBoard(ownerId, title);
+  const newBoard = await boardsServices.addBoard(ownerId, req.body);
 
   if (newBoard.error) {
     throw HttpError(409, newBoard.error);
