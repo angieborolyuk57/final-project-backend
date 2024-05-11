@@ -1,7 +1,7 @@
 const { Schema, model } = require('mongoose');
 const handleMongooseError = require('../helpers/handleMongooseError.js');
 
-const iconList = [
+const options = [
   '#icon-Project',
   '#icon-star',
   '#icon-loading',
@@ -11,8 +11,6 @@ const iconList = [
   '#icon-colors',
   '#icon-hexagon',
 ];
-
-
 
 const boardSchema = new Schema(
   {
@@ -24,7 +22,7 @@ const boardSchema = new Schema(
     icon: {
       type: String,
       default: '#icon-hexagon',
-      enum: iconList,
+      enum: options,
     },
     background: {
       type: String,
