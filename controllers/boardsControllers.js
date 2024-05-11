@@ -10,7 +10,6 @@ const getAllBoards = async (req, res) => {
 
 const addBoard = async (req, res) => {
   const { _id: owner } = req.user;
-  const { title } = req.body;
 
   const ownerId = new mongoose.Types.ObjectId(owner);
 

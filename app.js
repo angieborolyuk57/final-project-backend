@@ -15,10 +15,6 @@ app.use(morgan('tiny'));
 app.use(cors());
 app.use(express.json());
 
-app.use('/welcome', (req, res) => {
-  res.send('<h1>Welcome Page</h1>');
-});
-
 //routers
 app.use('/users', authRouter);
 app.use('/boards', boardsRouter);

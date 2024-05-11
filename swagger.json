@@ -379,54 +379,7 @@
         }
       }
     },
-    "/theme/:id": {
-      "get": {
-        "tags": ["Theme"],
-        "summary": "Theme endpoint",
-        "parameters": [{ "in": "path", "name": "id" }],
-        "security": [{ "Bearer": [] }],
-        "responses": {
-          "200": {
-            "description": "Successful operation",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/updateThemeSchema"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Bearer auth failed",
-            "content": {}
-          }
-        }
-      },
-      "patch": {
-        "tags": ["Theme"],
-        "summary": "Update Theme",
-        "parameters": [{ "in": "path", "name": "id" }],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/PatchAllBackgroundsResponse"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Successful update theme"
-          },
-          "401": {
-            "description": "Authentication error"
-          }
-        }
-      }
-    },
-    "/colomns/:boardId": {
+    "/columns/:boardId": {
       "get": {
         "tags": ["Column"],
         "summary": "Columns endpoint",
@@ -498,7 +451,7 @@
         }
       }
     },
-    "/colomns/:columnId": {
+    "/columns/:columnId": {
       "put": {
         "tags": ["Column"],
         "summary": "Columns endpoint",
@@ -532,7 +485,7 @@
       "delete": {
         "tags": ["Column"],
         "summary": "Columns endpoint",
-        "parameters": [{ "in": "path", "name": "colomnId" }],
+        "parameters": [{ "in": "path", "name": "columnId" }],
         "security": [{ "Bearer": [] }],
         "responses": {
           "200": {
@@ -584,11 +537,11 @@
         }
       }
     },
-    "/cards/:colomnId": {
+    "/cards/:columnId": {
       "post": {
         "tags": ["Card"],
         "summary": "Cards endpoint",
-        "parameters": [{ "in": "path", "name": "colomnId" }],
+        "parameters": [{ "in": "path", "name": "columnId" }],
         "security": [{ "Bearer": [] }],
         "requestBody": {
           "description": "Cards's object",
@@ -964,10 +917,10 @@
               "description": "Board's title",
               "example": "Example column"
             },
-            "icon_id": {
-              "type": "number",
-              "description": "Icon's id",
-              "example": 4
+            "icon": {
+              "type": "string",
+              "description": "Icon's name",
+              "example": "#icon-hexagon"
             },
             "background": {
               "type": "string",
@@ -985,14 +938,14 @@
           {
             "_id": "12312789",
             "title": "Example board",
-            "icon_id": 4,
+            "icon": "#icon-hexagon",
             "background": "12837981271422",
             "owner": "123878319791"
           },
           {
             "_id": "12312789",
             "title": "Example 2 board",
-            "icon_id": 2,
+            "icon": "#icon-hexagon",
             "background": "12837981271422",
             "owner": "123878319791"
           }
@@ -1007,10 +960,10 @@
             "description": "Board's title",
             "example": "New Board"
           },
-          "iconId": {
+          "icon": {
             "type": "number",
             "description": "Board's id",
-            "example": 2
+            "example": "#icon-hexagon"
           },
           "background": {
             "type": "string",
@@ -1020,7 +973,7 @@
         },
         "example": {
           "title": "New Board",
-          "iconId": 2,
+          "icon": "#icon-hexagon",
           "background": "12837981271422"
         }
       },
@@ -1037,10 +990,10 @@
             "description": "Board's title",
             "example": "Example column"
           },
-          "icon_id": {
-            "type": "number",
-            "description": "Board's id",
-            "example": 2
+          "icon": {
+            "type": "String",
+            "default": "#icon-hexagon",
+            "enum": "options"
           },
           "background": {
             "type": "string",
@@ -1056,7 +1009,7 @@
         "example": {
           "_id": "12312789",
           "title": "Example column",
-          "icon_id": 2,
+          "icon": "#icon-hexagon",
           "background": "12837981271422",
           "owner": "123878319791"
         }
@@ -1334,7 +1287,9 @@
           "priority",
           "deadline",
           "boardId",
-          "columnId"
+          "columnId",
+          "owner",
+          "index"
         ],
         "properties": {
           "title": {
@@ -1606,65 +1561,6 @@
             "owner": "123878319791"
           },
           "message": "Card deleted successfully"
-        }
-      },
-      "GetAllBackgroundsResponse": {
-        "type": "array",
-        "items": {
-          "type": "object",
-          "properties": {
-            "_id": {
-              "type": "string",
-              "description": "Background's id",
-              "example": "12312789"
-            },
-            "backgroundMinURL": {
-              "type": "string",
-              "description": "Background's min 1x url",
-              "example": "https://res.cloudinary.com"
-            },
-            "backgroundMin2xURL": {
-              "type": "string",
-              "description": "Background's min 2x url",
-              "example": "https://res.cloudinary.com"
-            }
-          }
-        },
-        "example": [
-          {
-            "_id": "12312789",
-            "backgroundMinURL": "https://res.cloudinary.com/1x",
-            "backgroundMin2xURL": "https://res.cloudinary.com/2x"
-          },
-          {
-            "_id": "12312782",
-            "backgroundMinURL": "https://res.cloudinary.com/1x",
-            "backgroundMin2xURL": "https://res.cloudinary.com/2x"
-          }
-        ]
-      },
-
-      "PatchAllBackgroundsResponse": {
-        "type": "array",
-        "items": {
-          "type": "object",
-          "properties": {
-            "_id": {
-              "type": "string",
-              "description": "Background's id",
-              "example": "12312789"
-            },
-            "backgroundMinURL": {
-              "type": "string",
-              "description": "Background's min 1x url",
-              "example": "https://res.cloudinary.com"
-            },
-            "backgroundMin2xURL": {
-              "type": "string",
-              "description": "Background's min 2x url",
-              "example": "https://res.cloudinary.com"
-            }
-          }
         }
       }
     },
