@@ -2,7 +2,7 @@ const express = require('express');
 const morgan = require('morgan');
 const cors = require('cors');
 const swaggerUi = require('swagger-ui-express');
-const swaggerDocs = require('./helpers/swagger');
+const swaggerDocs = require('./swagger.json');
 
 const authRouter = require('./routes/authRouter');
 const boardsRouter = require('./routes/boardsRouter');
@@ -19,16 +19,13 @@ app.use('/welcome', (req, res) => {
   res.send('<h1>Welcome Page</h1>');
 });
 
-
-//routers 
+//routers
 app.use('/users', authRouter);
 app.use('/boards', boardsRouter);
 app.use('/columns', columnsRouter);
 app.use('/cards', cardsRouter);
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
-
-  
 
 app.use((req, res) => {
   res.status(404).json({ message: 'Route not found' });
