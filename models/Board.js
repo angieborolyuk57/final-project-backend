@@ -2,15 +2,17 @@ const { Schema, model } = require('mongoose');
 const handleMongooseError = require('../helpers/handleMongooseError.js');
 
 const iconList = [
-  'four-circles',
-  'eye',
-  'star',
-  'loading',
-  'puzzle',
-  'container',
-  'logo',
-  'hexagon',
+  '#icon-Project',
+  '#icon-star',
+  '#icon-loading',
+  '#icon-puzzle-piece',
+  '#icon-container',
+  '#icon-lightning',
+  '#icon-colors',
+  '#icon-hexagon',
 ];
+
+
 
 const boardSchema = new Schema(
   {
@@ -21,7 +23,7 @@ const boardSchema = new Schema(
     },
     icon: {
       type: String,
-      default: 'four-circles',
+      default: '#icon-hexagon',
       enum: iconList,
     },
     background: {
