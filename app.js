@@ -26,7 +26,9 @@ app.use('/boards', boardsRouter);
 app.use('/columns', columnsRouter);
 app.use('/cards', cardsRouter);
 
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs()));
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
+
+  
 
 app.use((req, res) => {
   res.status(404).json({ message: 'Route not found' });
