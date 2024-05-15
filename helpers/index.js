@@ -1,8 +1,9 @@
-const validateBody = require("./validateBody");
-const HttpError = require("./HttpError");
-const errorCatcher = require("./errorCatcher");
-const upload = require("./upload");
-const authenticate = require("./authenticate");
+const validateBody = require('./validateBody');
+const HttpError = require('./HttpError');
+const errorCatcher = require('./errorCatcher');
+const upload = require('./upload');
+const authenticate = require('./authenticate');
+const isIdValid = require('./isIdValid');
 
 module.exports = {
   validateBody,
@@ -10,4 +11,5 @@ module.exports = {
   errorCatcher,
   upload,
   authenticate,
+  isIdValid,
 };

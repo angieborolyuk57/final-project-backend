@@ -5,6 +5,7 @@ const {
   createColumnSchema,
   updateColumnSchema,
 } = require('../schemas/columnSchema.js');
+const { isIdValid } = require('../helpers');
 
 const columnsRouter = express.Router();
 
@@ -20,6 +21,7 @@ columnsRouter.post(
 columnsRouter.put(
   '/:columnId',
   authenticate,
+  isIdValid,
   validateBody(updateColumnSchema),
   columnsControllers.updateColumn
 );
@@ -27,6 +29,7 @@ columnsRouter.put(
 columnsRouter.delete(
   '/:columnId',
   authenticate,
+  isIdValid,
   columnsControllers.deleteColumn
 );
 

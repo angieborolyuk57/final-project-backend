@@ -6,6 +6,7 @@ const {
   updateCardSchema,
   updateColumnIdInCardSchema,
 } = require('../schemas/cardSchema.js');
+const { isIdValid } = require('../helpers');
 
 const cardsRouter = express.Router();
 
@@ -21,6 +22,7 @@ cardsRouter.post(
 cardsRouter.put(
   '/:cardId',
   authenticate,
+  isIdValid,
   validateBody(updateCardSchema),
   cardsControllers.updateCard
 );
@@ -28,10 +30,16 @@ cardsRouter.put(
 cardsRouter.patch(
   '/:cardId',
   authenticate,
+  isIdValid,
   validateBody(updateColumnIdInCardSchema),
   cardsControllers.updateColumnIdInCard
 );
 
-cardsRouter.delete('/:cardId', authenticate, cardsControllers.deleteCard);
+cardsRouter.delete(
+  '/:cardId',
+  authenticate,
+  isIdValid,
+  cardsControllers.deleteCard
+);
 
 module.exports = cardsRouter;

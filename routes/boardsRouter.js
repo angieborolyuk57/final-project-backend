@@ -5,6 +5,7 @@ const {
   createBoardSchema,
   updateBoardSchema,
 } = require('../schemas/boardSchema.js');
+const { isIdValid } = require('../helpers');
 
 const boardsRouter = express.Router();
 
@@ -20,10 +21,16 @@ boardsRouter.post(
 boardsRouter.put(
   '/:boardId',
   authenticate,
+  isIdValid,
   validateBody(updateBoardSchema),
   boardsControllers.updateBoard
 );
 
-boardsRouter.delete('/:boardId', authenticate, boardsControllers.deleteBoard);
+boardsRouter.delete(
+  '/:boardId',
+  authenticate,
+  isIdValid,
+  boardsControllers.deleteBoard
+);
 
 module.exports = boardsRouter;
